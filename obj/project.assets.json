@@ -1130,11 +1130,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\CUProject\\BlackMossTemplate\\BlackMossTemplate.csproj",
-      "projectName": "BlackMossTemplate",
-      "projectPath": "F:\\CUProject\\BlackMossTemplate\\BlackMossTemplate.csproj",
+      "projectUniqueName": "F:\\CUProject\\Random-TP\\Random-TP.csproj",
+      "projectName": "Random-TP",
+      "projectPath": "F:\\CUProject\\Random-TP\\Random-TP.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "F:\\CUProject\\BlackMossTemplate\\obj\\",
+      "outputPath": "F:\\CUProject\\Random-TP\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -7,7 +7,7 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 # 获取时间戳
-$timestamp = Get-Date -Format "yyyy-MM-dd_HHmmss"
+$timestamp = Get-Date -Format "yyyy-MM-dd_HH.mm.ss"
 
 # 各种路径
 $GamePath = [System.IO.Path]::GetFullPath($GamePath) # 游戏路径
