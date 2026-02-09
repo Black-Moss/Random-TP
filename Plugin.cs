@@ -14,14 +14,11 @@ namespace RandomTP
         internal new static ManualLogSource Logger;
         private readonly Harmony _harmony = new("com.blackmoss.randomtp");
         private static Plugin Instance { get; set; } = null!;
-
         private bool _isRandomTpLoopRunning;
-
-        private int _tpCountdown = 9;
-            // configTpCountdown.Value;
+        private int _tpCountdown = 12;
         
         // ReSharper disable once InconsistentNaming
-        // private static ConfigEntry<int> configTpCountdown;
+        private static ConfigEntry<int> configTpCountdown;
 
         private void Awake()
         {
@@ -29,12 +26,11 @@ namespace RandomTP
             Instance = this;
             _harmony.PatchAll();
             
-            // configTpCountdown = Config.Bind(
-            //     "General",
-            //     "TpCountdown",
-            //     60,
-            //     "Default 1 minute."
-            // );
+            configTpCountdown = Config.Bind(
+                "General",
+                "TpCountdown",
+                12
+            );
         }
         
         [HarmonyPatch(typeof(PlayerCamera), "Awake")]
@@ -44,7 +40,7 @@ namespace RandomTP
             {
                 if (Instance != null)
                 {
-                    Instance.StartRandomTpLoop(10);
+                    Instance.StartRandomTpLoop(13);
                     // configTpCountdown.Value);
                 }
             }
@@ -90,23 +86,17 @@ namespace RandomTP
         
         public void TpTips()
         {
-            switch (_tpCountdown)
+            if (_tpCountdown != 1)
             {
-                case 10:
-                    AlertText("Random TP countdown: 10");
-                    break;
-                case <= 3 and > 0:
-                    AlertText($"Random TP countdown: {_tpCountdown}");
-                    _tpCountdown--;
-                    break;
-                case <= 1:
-                    _tpCountdown = 9;
-                        // configTpCountdown.Value - 1;
-                    break;
-                default:
-                    _tpCountdown--;
-                    break;
+                AlertText($"Random TP countdown: {_tpCountdown}");
             }
+            else
+            {
+                AlertText($"Random TP countdown: 1");
+                _tpCountdown = 12;
+            }
+            
+            _tpCountdown--;
         }
         
         public void AlertText(string text, bool important = true)
