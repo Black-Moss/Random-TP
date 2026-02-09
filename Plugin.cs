@@ -14,11 +14,13 @@ namespace RandomTP
         internal new static ManualLogSource Logger;
         private readonly Harmony _harmony = new("com.blackmoss.randomtp");
         private static Plugin Instance { get; set; } = null!;
-        private bool _isRandomTpLoopRunning;
-        private float _tpCountdown;
+        private bool _isRandomTpLoopRunning;    // 倒计时状态
+        private float _tpCountdown;             // 传送倒计时
         
         // ReSharper disable once InconsistentNaming
-        private static ConfigEntry<float> configTpCountdown;
+        private static ConfigEntry<float> configTpCountdown;    // 倒计时配置
+        // ReSharper disable once InconsistentNaming
+        private static ConfigEntry<bool> configTipStyle;        // 提示样式配置
 
         private void Awake()
         {
@@ -29,9 +31,16 @@ namespace RandomTP
             configTpCountdown = Config.Bind(
                 "General",
                 "TpCountdown",
-                12f
+                60f     // 默认倒计时60秒
+            );
+            configTipStyle = Config.Bind(
+                "General",
+                "TipStyle",
+                true,   // true: 居中, false: 底端
+                "true: Center of the screen, false: Bottom of the screen"
             );
             
+            // 防止开局传送
             _tpCountdown = configTpCountdown.Value + 3f;
         }
         
@@ -71,24 +80,46 @@ namespace RandomTP
         
         public void RandomTp()
         {
-            var vector = new Vector2(Random.Range(-512, 512), Random.Range(-512, 512));
-            
+            // 提前递减倒计时，避免初始值为0时的逻辑错误
+            _tpCountdown--;
+
+            // 生成随机坐标
+            var vector = new Vector2(Random.Range(-512, 513), Random.Range(-512, 513));
+
+            // 倒计时提示逻辑统一处理
+            HandleCountdownAlert();
+
+            // 执行传送逻辑
+            if (_tpCountdown <= 0)
+            {
+                ResetTpState(vector);
+            }
+        }
+
+        private void HandleCountdownAlert()
+        {
+            // 统一处理倒计时提示
             if (_tpCountdown is > 0 and < 11)
             {
-                AlertText($"Random TP countdown: {_tpCountdown}");
+                AlertText($"Random TP countdown: {_tpCountdown}", configTipStyle.Value);
             }
-            if (_tpCountdown == 0)
+            else if (Mathf.Approximately(_tpCountdown, 30) || Mathf.Approximately(_tpCountdown, 60))
             {
-                _tpCountdown = configTpCountdown.Value;
-                _isRandomTpLoopRunning = true;
-                PlayerCamera.main.body.transform.position = vector;
-                PlayerCamera.main.transform.position = vector;
+                AlertText($"Random TP countdown: {_tpCountdown}", configTipStyle.Value);
             }
+        }
 
-            _tpCountdown--;
+        private void ResetTpState(Vector2 targetPosition)
+        {
+            // 重置倒计时和状态
+            _tpCountdown = configTpCountdown.Value;
+            _isRandomTpLoopRunning = true;
+            
+            PlayerCamera.main.body.transform.position = targetPosition;
+            PlayerCamera.main.transform.position = targetPosition;
         }
         
-        public void AlertText(string text, bool important = true)
+        public void AlertText(string text, bool important)
         {
             PlayerCamera.main.DoAlert(text, important);
         }
