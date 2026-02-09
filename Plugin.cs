@@ -1,5 +1,4 @@
-﻿using System;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -8,18 +7,21 @@ using Random = UnityEngine.Random;
 
 namespace RandomTP
 {
-    [BepInPlugin("blackmoss.randomtp", "RandomTP", "1.0.0")]
+    [BepInPlugin("com.blackmoss.randomtp", "Random TP", "1.0.0")]
     public class Plugin : BaseUnityPlugin
     {
+        // ReSharper disable once MemberCanBePrivate.Global
         internal new static ManualLogSource Logger;
-        private readonly Harmony _harmony = new("blackmoss.randomtp");
+        private readonly Harmony _harmony = new("com.blackmoss.randomtp");
         private static Plugin Instance { get; set; } = null!;
 
         private bool _isRandomTpLoopRunning;
-        private int _tpCountdown = configTpCountdown.Value;
+
+        private int _tpCountdown = 9;
+            // configTpCountdown.Value;
         
         // ReSharper disable once InconsistentNaming
-        static ConfigEntry<int> configTpCountdown;
+        // private static ConfigEntry<int> configTpCountdown;
 
         private void Awake()
         {
@@ -27,12 +29,12 @@ namespace RandomTP
             Instance = this;
             _harmony.PatchAll();
             
-            configTpCountdown = Config.Bind(
-                "General",
-                "ConfigTpCountdown",
-                60,
-                "Default 1 minute."
-            );
+            // configTpCountdown = Config.Bind(
+            //     "General",
+            //     "TpCountdown",
+            //     60,
+            //     "Default 1 minute."
+            // );
         }
         
         [HarmonyPatch(typeof(PlayerCamera), "Awake")]
@@ -42,7 +44,8 @@ namespace RandomTP
             {
                 if (Instance != null)
                 {
-                    Instance.StartRandomTpLoop(configTpCountdown.Value);
+                    Instance.StartRandomTpLoop(10);
+                    // configTpCountdown.Value);
                 }
             }
         }
@@ -97,7 +100,8 @@ namespace RandomTP
                     _tpCountdown--;
                     break;
                 case <= 1:
-                    _tpCountdown = configTpCountdown.Value - 1;
+                    _tpCountdown = 9;
+                        // configTpCountdown.Value - 1;
                     break;
                 default:
                     _tpCountdown--;
