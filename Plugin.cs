@@ -15,10 +15,10 @@ namespace RandomTP
         private readonly Harmony _harmony = new("com.blackmoss.randomtp");
         private static Plugin Instance { get; set; } = null!;
         private bool _isRandomTpLoopRunning;
-        private int _tpCountdown = 12;
+        private float _tpCountdown;
         
         // ReSharper disable once InconsistentNaming
-        private static ConfigEntry<int> configTpCountdown;
+        private static ConfigEntry<float> configTpCountdown;
 
         private void Awake()
         {
@@ -29,29 +29,30 @@ namespace RandomTP
             configTpCountdown = Config.Bind(
                 "General",
                 "TpCountdown",
-                12
+                12f
             );
+            
+            _tpCountdown = configTpCountdown.Value + 3f;
         }
         
         [HarmonyPatch(typeof(PlayerCamera), "Awake")]
         public class PlayerCameraAwakePatch
         {
+            // ReSharper disable once UnusedMember.Global
             public static void Postfix()
             {
                 if (Instance != null)
                 {
-                    Instance.StartRandomTpLoop(13);
-                    // configTpCountdown.Value);
+                    Instance.StartRandomTpLoop();
                 }
             }
         }
         
-        public void StartRandomTpLoop(float interval)
+        public void StartRandomTpLoop()
         {
             if (_isRandomTpLoopRunning) return;
             _isRandomTpLoopRunning = true;
-            StartCoroutine(RandomTpLoop(interval));
-            StartCoroutine(TpTipsLoop(1));
+            StartCoroutine(RandomTpLoop());
         }
         
         public void StopRandomTpLoop()
@@ -59,43 +60,31 @@ namespace RandomTP
             _isRandomTpLoopRunning = false;
         }
         
-        public System.Collections.IEnumerator RandomTpLoop(float interval)
+        public System.Collections.IEnumerator RandomTpLoop()
         {
             while (_isRandomTpLoopRunning)
             {
-                yield return new WaitForSeconds(interval);
+                yield return new WaitForSeconds(1);
                 RandomTp();
-            }
-        }
-        
-        public System.Collections.IEnumerator TpTipsLoop(float interval)
-        {
-            while (_isRandomTpLoopRunning)
-            {
-                yield return new WaitForSeconds(interval);
-                TpTips();
             }
         }
         
         public void RandomTp()
         {
             var vector = new Vector2(Random.Range(-512, 512), Random.Range(-512, 512));
-            PlayerCamera.main.body.transform.position = vector; 
-            PlayerCamera.main.transform.position = vector;
-        }
-        
-        public void TpTips()
-        {
-            if (_tpCountdown != 1)
+            
+            if (_tpCountdown is > 0 and < 11)
             {
                 AlertText($"Random TP countdown: {_tpCountdown}");
             }
-            else
+            if (_tpCountdown == 0)
             {
-                AlertText($"Random TP countdown: 1");
-                _tpCountdown = 12;
+                _tpCountdown = configTpCountdown.Value;
+                _isRandomTpLoopRunning = true;
+                PlayerCamera.main.body.transform.position = vector;
+                PlayerCamera.main.transform.position = vector;
             }
-            
+
             _tpCountdown--;
         }
         
