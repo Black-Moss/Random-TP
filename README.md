@@ -1,4 +1,4 @@
-﻿# Random Tp
+﻿# Random TP
 Teleports you to a random location every 60 seconds(default).
 
 In the configuration file can modify the teleportation countdown and the style of tips.
