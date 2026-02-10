@@ -7,12 +7,12 @@ using Random = UnityEngine.Random;
 
 namespace RandomTP
 {
-    [BepInPlugin("com.blackmoss.randomtp", "Random TP", "1.0.0")]
+    [BepInPlugin("blackmoss.randomtp", "Random TP", "1.0.0")]
     public class Plugin : BaseUnityPlugin
     {
         // ReSharper disable once MemberCanBePrivate.Global
         internal new static ManualLogSource Logger;
-        private readonly Harmony _harmony = new("com.blackmoss.randomtp");
+        private readonly Harmony _harmony = new("blackmoss.randomtp");
         private static Plugin Instance { get; set; } = null!;
         private bool _isRandomTpLoopRunning;    // 倒计时状态
         private float _tpCountdown;             // 传送倒计时
