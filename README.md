@@ -1,9 +1,18 @@
-﻿# Random TP
+﻿![covor](Covor.png)
+# Random TP
 Teleports you to a random location every 60 seconds(default).
 
-In the configuration file can modify the teleportation countdown and the style of tips.
+Configs `blackmoss.randomtp.cfg`:
+* `TpCountdown`: The interval between every time tp, default: 60f
+* `TpTipStyle`: 
+  * true: Center of the screen
+  * false: Bottom of the screen
 
-
+# 随机传送
 在60秒（默认）内随机传送。
 
-在配置文件里可以修改传送倒计时和提示样式。
+配置文件 `blackmoss.randomtp.cfg`:
+* `TpCountdown`: 每次传送的间隔，默认: 60f
+* `TpTipStyle`:
+    * true: 屏幕中间
+    * false: 屏幕底部
