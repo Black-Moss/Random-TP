@@ -1,6 +1,18 @@
 ﻿{
   "alert": {
     "countdown": "随机传送倒计时：{0}"
+  },
+  "command": {
+    "randomtp": {
+      "name": "立即执行一次随机传送，同时重置随机传送冷却",
+      "message": "传送完成！"
+    }
+  },
+  "config": {
+    "TpTipStyle": "true：屏幕正中，false：屏幕正下"
+  },
+  "log": {
+    "tp_triggered": "传送在{0}秒内触发"
   }
 }
    

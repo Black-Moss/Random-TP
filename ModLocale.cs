@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using BepInEx.Logging;
-using MossLib.Locale;
+using MossLib.Base;
 
 namespace RandomTP;
 

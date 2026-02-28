@@ -23,6 +23,7 @@ $bepInExPath = [System.IO.Path]::Combine($GamePath, "BepInEx")
 $bepInExLog = [System.IO.Path]::Combine($bepInExPath, "LogOutput.log") # BepInEx 日志
 $GameExecutable = [System.IO.Path]::Combine($GamePath, "CasualtiesUnknown.exe") # 游戏文件
 $ModDll = [System.IO.Path]::Combine($PSScriptRoot, "bin/Debug/net472", "$ModNamespace.dll")
+$Readme = [System.IO.Path]::Combine($PSScriptRoot, "README.md")
 
 # 统一使用 ModName 作为目标文件夹名称
 $targetModFolder = $ModName
@@ -158,6 +159,17 @@ try
 catch
 {
     Write-Warning "Failed to verify copied Lang files: $_"
+}
+
+# 复制README
+try
+{
+    Copy-Item $Readme ([System.IO.Path]::Combine($bepInExPath, "plugins", $targetModFolder, "README.md")) -Force
+    Write-ColoredMessage "Copying README.md to ""$bepInExPath\plugins\$targetModFolder\README.md""." Cyan
+}
+catch
+{
+    Write-Warning "Failed to copy README.md: $_"
 }
 
 # 启动游戏进程并重定向输出

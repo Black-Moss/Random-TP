@@ -1,5 +1,17 @@
 ﻿{
   "alert": {
     "countdown": "Random TP countdown: {0}"
+  },
+  "command": {
+    "randomtp": {
+      "name": "Instantly random tp and reset the cooldown",
+      "message": "Teleport!"
+    }
+  },
+  "config": {
+    "TpTipStyle": "true: Center of the screen, false: Bottom of the screen"
+  },
+  "log": {
+    "tp_triggered": "Teleport triggered at {0}s"
   }
 }
